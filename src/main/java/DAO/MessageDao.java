@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.sql.Statement;
 
 import Model.Message;
 import Util.ConnectionUtil;
@@ -33,7 +32,6 @@ public class MessageDao implements BaseDao<Message> {
                 messages.add(rsToMessage(rs));
             }
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return messages;
@@ -51,7 +49,6 @@ public class MessageDao implements BaseDao<Message> {
                 return rsToMessage(rs);
             }
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return null;
@@ -69,7 +66,6 @@ public class MessageDao implements BaseDao<Message> {
                 messages.add(rsToMessage(rs));
             }
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return messages;
@@ -80,7 +76,7 @@ public class MessageDao implements BaseDao<Message> {
         String sql = "INSERT INTO message(posted_by, message_text, time_posted_epoch) VALUES (?, ?, ?);";
         Connection conn = ConnectionUtil.getConnection();
         try {
-            PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, item.getPosted_by());
             ps.setString(2, item.getMessage_text());
             ps.setLong(3, item.getTime_posted_epoch());
@@ -88,7 +84,6 @@ public class MessageDao implements BaseDao<Message> {
             ps.executeUpdate();
             return true;
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             return false;
         }
@@ -99,16 +94,15 @@ public class MessageDao implements BaseDao<Message> {
         String sql = "UPDATE message SET posted_by = ?, message_text = ?, time_posted_epoch = ?, WHERE message_id = ?;";
         Connection conn = ConnectionUtil.getConnection();
         try {
-            PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, item.getPosted_by());
             ps.setString(2, item.getMessage_text());
             ps.setLong(3, item.getTime_posted_epoch());
             ps.setInt(4, item.getMessage_id());
 
             int updated = ps.executeUpdate();
-            return updated > 0;
+            return (updated > 0);
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             return false;
         }
@@ -119,13 +113,12 @@ public class MessageDao implements BaseDao<Message> {
         String sql = "DELETE FROM message WHERE message_id = ?;";
         Connection conn = ConnectionUtil.getConnection();
         try {
-            PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, item.getMessage_id());
 
             int updated = ps.executeUpdate();
             return updated > 0;
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             return false;
         }
