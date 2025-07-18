@@ -1,16 +1,15 @@
 package DAO;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface BaseDao<T> {
     /**
-     * Returns an object by its ID, if its found. Otherwise returns an empty optional (This is a common design pattern in Rust, I hope it's acceptable in Java)
+     * Returns an object by its ID, if its found. Otherwise returns null
      * 
      * @param id ID of the object to get from database
-     * @return The object, if its found, otherwise an empty optional.
+     * @return The object, if its found, otherwise null.
      */
-    Optional<T> getItemById(int id);
+    T getItemById(int id);
 
     /**
      * Retrieves all items in the database.

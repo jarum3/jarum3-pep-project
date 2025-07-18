@@ -1,14 +1,13 @@
 package DAO;
 
 import java.util.List;
-import java.util.Optional;
 
 import Model.Account;
 
 public class AccountDao implements BaseDao<Account> {
 
     @Override
-    public Optional<Account> getItemById(int id) {
+    public Account getItemById(int id) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getItemById'");
     }
