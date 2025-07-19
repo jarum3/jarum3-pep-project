@@ -67,10 +67,9 @@ public class SocialMediaController {
             if (loggedIn != null) {
                 ctx.json(map.writeValueAsString(loggedIn));
                 ctx.sessionAttribute("logged_in_account", loggedIn);
-                ctx.json(loggedIn);
             }
             else {
-                ctx.status(400);
+                ctx.status(401);
             }
     }
 
@@ -130,7 +129,7 @@ public class SocialMediaController {
                 ctx.json(updated);
             }
             else {
-                ctx.status(400);
+                ctx.status(401);
             }
         } catch (NumberFormatException e) {
             ctx.status(400);

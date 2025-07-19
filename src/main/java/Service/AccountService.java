@@ -30,8 +30,14 @@ public class AccountService {
     }
 
     public Account createAccount(Account account) throws Exception {
-        if (getAccountByUsername(account.getUsername()) != null) {
+        if (accountDao.usernameExists(account.getUsername())) {
             throw new Exception("Account already exists");
+        }
+        if (account.getUsername().trim().isEmpty()) {
+            throw new Exception("Username is blank");
+        }
+        if (account.getPassword().trim().length() < 4) {
+            throw new Exception("Password length less than 4");
         }
         Account accountCreated = accountDao.insert(account);
         return accountCreated;

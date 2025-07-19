@@ -96,7 +96,7 @@ public class MessageDao implements BaseDao<Message> {
 
     @Override
     public Boolean update(Message item) {
-        String sql = "UPDATE message SET posted_by = ?, message_text = ?, time_posted_epoch = ?, WHERE message_id = ?;";
+        String sql = "UPDATE message SET posted_by = ?, message_text = ?, time_posted_epoch = ? WHERE message_id = ?;";
         Connection conn = ConnectionUtil.getConnection();
         try {
             PreparedStatement ps = conn.prepareStatement(sql);

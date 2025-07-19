@@ -34,14 +34,14 @@ public class MessageService {
 
     public Message updateMessage(Message message) throws Exception {
         Message original = this.getMessageById(message.getMessage_id());
-        if (original == null || (message.posted_by != original.posted_by)) {
+        if (original == null) {
             return null;
         }
         original.setMessage_text(message.getMessage_text());
         if (!validateMessage(original)) {
             return null;
         }
-        if (messageDao.update(original)) return message;
+        if (messageDao.update(original)) return original;
         return null;
     }
 
