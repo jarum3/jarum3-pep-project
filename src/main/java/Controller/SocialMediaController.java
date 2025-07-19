@@ -53,7 +53,10 @@ public class SocialMediaController {
         Account account = map.readValue(ctx.body(), Account.class);
         try {
             Account registered = accountService.createAccount(account);
-            ctx.json(map.writeValueAsString(registered));
+            if (registered != null) {
+                ctx.json(map.writeValueAsString(registered));
+            }
+            else ctx.status(400);
         } catch(Exception e) {
             ctx.status(400);
         }

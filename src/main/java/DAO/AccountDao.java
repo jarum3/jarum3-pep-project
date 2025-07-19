@@ -39,14 +39,20 @@ public class AccountDao implements BaseDao<Account> {
         return null;
     }
 
-    public Boolean usernameExists(String username) {
-        String sql = "SELECT * FROM account WHERE username = ?";
+    public boolean usernameExists (String username) {
+        String sql = "SELECT COUNT(*) FROM account WHERE username = ?";
         Connection conn = ConnectionUtil.getConnection();
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, username);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) return true;
+            try {
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    return (rs.getInt(1) > 0);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -111,10 +117,10 @@ public class AccountDao implements BaseDao<Account> {
             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, item.getUsername());
             ps.setString(2, item.getPassword());
-            ps.executeQuery();
-            ResultSet generatedKeys = ps.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                int id = generatedKeys.getInt(1);
+            ps.executeUpdate();
+            ResultSet keys = ps.getGeneratedKeys();
+            if (keys.next()) {
+                int id = keys.getInt(1);
                 return new Account(id, item.getUsername(), item.getPassword());
             }
         } catch (SQLException e) {

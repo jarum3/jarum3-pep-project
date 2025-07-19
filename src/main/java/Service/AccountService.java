@@ -28,18 +28,19 @@ public class AccountService {
         return accountDao.validateLogin(account.getUsername(), account.getPassword());
     }
 
+    public Boolean validCombo(Account account) {
+        if (account.getUsername().trim().isEmpty()) return false;
+        if (account.getPassword().trim().length() < 4) return false;
+        if (accountDao.usernameExists(account.getUsername().trim())) return false;
+        return true;
+    }
+
     public Account createAccount(Account account) throws Exception {
-        if (accountDao.usernameExists(account.getUsername())) {
-            throw new Exception("Account already exists");
+        if (validCombo(account)) {
+            Account accountCreated = accountDao.insert(account);
+            return accountCreated;
         }
-        if (account.getUsername().trim().isEmpty()) {
-            throw new Exception("Username is blank");
-        }
-        if (account.getPassword().trim().length() < 4) {
-            throw new Exception("Password length less than 4");
-        }
-        Account accountCreated = accountDao.insert(account);
-        return accountCreated;
+        else return null;
     }
 
     public Boolean updateAccount(Account account) {
