@@ -25,23 +25,24 @@ public class MessageService {
         return messageDao.getAllItemsByAccountId(accountId);
     }
 
-    public Boolean createMessage(Message message, Account account) {
+    public Message createMessage(Message message, Account account) {
         if (validateMessage(message) && account.account_id == message.posted_by) {
-            return messageDao.insert(message);
+            if (messageDao.insert(message)) return message;
         }
-        return false;
+        return null;
     }
 
-    public Boolean updateMessage(Message message) throws Exception {
+    public Message updateMessage(Message message) throws Exception {
         Message original = this.getMessageById(message.getMessage_id());
         if (original == null || (message.posted_by != original.posted_by)) {
-            return false;
+            return null;
         }
         original.setMessage_text(message.getMessage_text());
         if (!validateMessage(original)) {
-            return false;
+            return null;
         }
-        return messageDao.update(original);
+        if (messageDao.update(original)) return message;
+        return null;
     }
 
     public Boolean deleteMessage(Message message) {

@@ -24,8 +24,9 @@ public class AccountService {
         return accountDao.getAllItems();
     }
 
-    public Boolean validateLogin(Account account) {
-        return accountDao.validateLogin(account.getUsername(), account.getPassword());
+    public Account validateLogin(Account account) {
+        if (accountDao.validateLogin(account.getUsername(), account.getPassword())) return account;
+        return null;
     }
 
     public Boolean createAccount(Account account) throws Exception {
