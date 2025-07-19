@@ -52,7 +52,7 @@ public class SocialMediaController {
         ObjectMapper map = new ObjectMapper();
         Account account = map.readValue(ctx.body(), Account.class);
         try {
-            Boolean registered = accountService.createAccount(account);
+            Account registered = accountService.createAccount(account);
             ctx.json(map.writeValueAsString(registered));
         } catch(Exception e) {
             ctx.status(400);
@@ -78,7 +78,7 @@ public class SocialMediaController {
         ObjectMapper map = new ObjectMapper();
         Message message = map.readValue(ctx.body(), Message.class);
         Account account = accountService.getAccountById(message.getPosted_by());
-        if (account != null) {
+        if (account != null && messageService.validateMessage(message)) {
             Message createdMessage = messageService.createMessage(message, account);
             ctx.json(createdMessage);
         } else ctx.status(400);

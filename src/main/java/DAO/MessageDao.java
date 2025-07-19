@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import Model.Message;
@@ -72,21 +73,25 @@ public class MessageDao implements BaseDao<Message> {
     }
 
     @Override
-    public Boolean insert(Message item) {
+    public Message insert(Message item) {
         String sql = "INSERT INTO message(posted_by, message_text, time_posted_epoch) VALUES (?, ?, ?);";
         Connection conn = ConnectionUtil.getConnection();
         try {
-            PreparedStatement ps = conn.prepareStatement(sql);
+            PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, item.getPosted_by());
             ps.setString(2, item.getMessage_text());
             ps.setLong(3, item.getTime_posted_epoch());
 
             ps.executeUpdate();
-            return true;
+            ResultSet keys = ps.getGeneratedKeys();
+            if (keys.next()) {
+                int id = keys.getInt(1);
+                return new Message(id, item.getPosted_by(), item.getMessage_text(), item.getTime_posted_epoch());
+            }
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
+            return null;
     }
 
     @Override

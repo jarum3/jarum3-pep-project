@@ -27,7 +27,7 @@ public class MessageService {
 
     public Message createMessage(Message message, Account account) {
         if (validateMessage(message) && account.account_id == message.posted_by) {
-            if (messageDao.insert(message)) return message;
+            return messageDao.insert(message);
         }
         return null;
     }
@@ -49,7 +49,7 @@ public class MessageService {
         return messageDao.delete(message);
     }
 
-    private Boolean validateMessage(Message message) {
-        return (message.getMessage_text() != null && !message.getMessage_text().isEmpty() && message.getMessage_text().length() <= 254);
+    public Boolean validateMessage(Message message) {
+        return (message.getMessage_text() != null && !message.getMessage_text().trim().isEmpty() && message.getMessage_text().length() <= 255);
     }
 }

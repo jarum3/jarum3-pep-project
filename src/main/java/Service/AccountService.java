@@ -29,11 +29,11 @@ public class AccountService {
         return null;
     }
 
-    public Boolean createAccount(Account account) throws Exception {
+    public Account createAccount(Account account) throws Exception {
         if (getAccountByUsername(account.getUsername()) != null) {
             throw new Exception("Account already exists");
         }
-        Boolean accountCreated = accountDao.insert(account);
+        Account accountCreated = accountDao.insert(account);
         return accountCreated;
     }
 

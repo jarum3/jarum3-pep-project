@@ -4,8 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
 
 import Model.Account;
 import Util.ConnectionUtil;
@@ -100,15 +102,19 @@ public class AccountDao implements BaseDao<Account> {
     }
 
     @Override
-    public Boolean insert(Account item) {
+    public Account insert(Account item) {
         String sql = "INSERT INTO account (username, password) VALUES (?, ?);";
         Connection conn = ConnectionUtil.getConnection();
         try {
-            PreparedStatement ps = conn.prepareStatement(sql);
+            PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, item.getUsername());
             ps.setString(2, item.getPassword());
             ps.executeQuery();
-            return true;
+            ResultSet generatedKeys = ps.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                int id = generatedKeys.getInt(1);
+                return new Account(id, item.getUsername(), item.getPassword());
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -22,7 +22,7 @@ public interface BaseDao<T> {
      * @param item The item to insert.
      * @return True if item was inserted, and false if item failed to insert.
      */
-    Boolean insert(T item);
+    T insert(T item);
 
     /**
      * Updates an existing item in the database.
