@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Objects;
 
 import Model.Account;
 import Util.ConnectionUtil;
@@ -21,20 +21,22 @@ public class AccountDao implements BaseDao<Account> {
             return new Account(accountId, username, password);
     }
 
-    public Boolean validateLogin(String username, String password) {
-        String sql = "SELECT * FROM account WHERE username = ?";
+    public Account validateLogin(String username, String password) {
+        String sql = "SELECT * FROM account WHERE username = ?;";
         Connection conn = ConnectionUtil.getConnection();
 
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
-            Account found = rsToAccount(rs);
-            return (password == found.getPassword()); 
+            if (rs.next()) {
+                Account found = new Account(rs.getInt("account_id"), rs.getString("username"), rs.getString("password"));
+                if (Objects.equals(password, found.getPassword())) return found; 
+            }
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
+        return null;
     }
 
     public Boolean usernameExists(String username) {
