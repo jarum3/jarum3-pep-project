@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import Model.Message;
 import Util.ConnectionUtil;
 
-public class MessageDao implements BaseDao<Message> {
+public class MessageDao {
 
     private Message rsToMessage(ResultSet rs) throws SQLException {
         int messageId = rs.getInt("message_id");
@@ -38,7 +38,6 @@ public class MessageDao implements BaseDao<Message> {
         return messages;
     }
 
-    @Override
     public Message getItemById(int id) {
         String sql = "SELECT * FROM message WHERE message_id = ?;";
         Connection conn = ConnectionUtil.getConnection();
@@ -55,7 +54,6 @@ public class MessageDao implements BaseDao<Message> {
         return null;
     }
 
-    @Override
     public List<Message> getAllItems() {
         String sql = "SELECT * FROM message;";
         Connection conn = ConnectionUtil.getConnection();
@@ -72,7 +70,6 @@ public class MessageDao implements BaseDao<Message> {
         return messages;
     }
 
-    @Override
     public Message insert(Message item) {
         String sql = "INSERT INTO message(posted_by, message_text, time_posted_epoch) VALUES (?, ?, ?);";
         Connection conn = ConnectionUtil.getConnection();
@@ -94,7 +91,6 @@ public class MessageDao implements BaseDao<Message> {
             return null;
     }
 
-    @Override
     public Boolean update(Message item) {
         String sql = "UPDATE message SET posted_by = ?, message_text = ?, time_posted_epoch = ? WHERE message_id = ?;";
         Connection conn = ConnectionUtil.getConnection();
@@ -113,7 +109,6 @@ public class MessageDao implements BaseDao<Message> {
         }
     }
 
-    @Override
     public Boolean delete(Message item) {
         String sql = "DELETE FROM message WHERE message_id = ?;";
         Connection conn = ConnectionUtil.getConnection();

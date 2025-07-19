@@ -12,7 +12,7 @@ import java.util.Objects;
 import Model.Account;
 import Util.ConnectionUtil;
 
-public class AccountDao implements BaseDao<Account> {
+public class AccountDao {
 
         private Account rsToAccount(ResultSet rs) throws SQLException {
             int accountId = rs.getInt("account_id");
@@ -59,7 +59,6 @@ public class AccountDao implements BaseDao<Account> {
         return false;
     }
 
-    @Override
     public Account getItemById(int id) {
         String sql = "SELECT * FROM account WHERE account_id = ?;";
         Connection conn = ConnectionUtil.getConnection();
@@ -92,7 +91,6 @@ public class AccountDao implements BaseDao<Account> {
         return null;
     }
 
-    @Override
     public List<Account> getAllItems() {
         String sql = "SELECT * FROM account;";
         Connection conn = ConnectionUtil.getConnection();
@@ -109,7 +107,6 @@ public class AccountDao implements BaseDao<Account> {
         return accounts;
     }
 
-    @Override
     public Account insert(Account item) {
         String sql = "INSERT INTO account (username, password) VALUES (?, ?);";
         Connection conn = ConnectionUtil.getConnection();
@@ -129,7 +126,6 @@ public class AccountDao implements BaseDao<Account> {
         return null;
     }
 
-    @Override
     public Boolean update(Account item) {
         String sql = "UPDATE account SET username = ?, password = ? WHERE account_id = ?;";
         Connection conn = ConnectionUtil.getConnection();
@@ -146,7 +142,6 @@ public class AccountDao implements BaseDao<Account> {
         return false;
     }
 
-    @Override
     public Boolean delete(Account item) {
         String sql = "DELETE FROM account WHERE account_id = ?;";
         Connection conn = ConnectionUtil.getConnection();
