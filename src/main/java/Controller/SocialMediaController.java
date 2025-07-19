@@ -129,7 +129,7 @@ public class SocialMediaController {
                 ctx.json(updated);
             }
             else {
-                ctx.status(401);
+                ctx.status(400);
             }
         } catch (NumberFormatException e) {
             ctx.status(400);
